@@ -17,6 +17,10 @@ public class src_Models : MonoBehaviour
         public float walkingForwardSpeed = 4;
         public float walkingBackwardSpeed = 2;
         public float walkingStrafeSpeed = 3;
+
+        [Header("Jumping")]
+        public float jumpingHeight = 10;
+        public float jumpingFalloff = 1;
     }
 
     #endregion
