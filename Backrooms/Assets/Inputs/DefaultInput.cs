@@ -41,6 +41,14 @@ public class @DefaultInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Slow Walk"",
+                    ""type"": ""Button"",
+                    ""id"": ""83684665-5de0-4303-a0aa-f84a85588f90"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -120,6 +128,17 @@ public class @DefaultInput : IInputActionCollection, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9eaf0662-4c2c-4943-bd8a-b11ad4a793bb"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Slow Walk"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -131,6 +150,7 @@ public class @DefaultInput : IInputActionCollection, IDisposable
         m_Character_Movement = m_Character.FindAction("Movement", throwIfNotFound: true);
         m_Character_View = m_Character.FindAction("View", throwIfNotFound: true);
         m_Character_Jump = m_Character.FindAction("Jump", throwIfNotFound: true);
+        m_Character_SlowWalk = m_Character.FindAction("Slow Walk", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -183,6 +203,7 @@ public class @DefaultInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Character_Movement;
     private readonly InputAction m_Character_View;
     private readonly InputAction m_Character_Jump;
+    private readonly InputAction m_Character_SlowWalk;
     public struct CharacterActions
     {
         private @DefaultInput m_Wrapper;
@@ -190,6 +211,7 @@ public class @DefaultInput : IInputActionCollection, IDisposable
         public InputAction @Movement => m_Wrapper.m_Character_Movement;
         public InputAction @View => m_Wrapper.m_Character_View;
         public InputAction @Jump => m_Wrapper.m_Character_Jump;
+        public InputAction @SlowWalk => m_Wrapper.m_Character_SlowWalk;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -208,6 +230,9 @@ public class @DefaultInput : IInputActionCollection, IDisposable
                 @Jump.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnJump;
+                @SlowWalk.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSlowWalk;
+                @SlowWalk.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSlowWalk;
+                @SlowWalk.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSlowWalk;
             }
             m_Wrapper.m_CharacterActionsCallbackInterface = instance;
             if (instance != null)
@@ -221,6 +246,9 @@ public class @DefaultInput : IInputActionCollection, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @SlowWalk.started += instance.OnSlowWalk;
+                @SlowWalk.performed += instance.OnSlowWalk;
+                @SlowWalk.canceled += instance.OnSlowWalk;
             }
         }
     }
@@ -230,5 +258,6 @@ public class @DefaultInput : IInputActionCollection, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnView(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnSlowWalk(InputAction.CallbackContext context);
     }
 }

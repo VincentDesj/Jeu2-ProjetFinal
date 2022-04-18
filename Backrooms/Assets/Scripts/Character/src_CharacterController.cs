@@ -28,14 +28,18 @@ public class src_CharacterController : MonoBehaviour
 
     public Vector3 jumpingForce;
     private Vector3 jumpingForceVelocity;
+    private bool isSlowWalking;
 
     private void Awake()
     {
+        isSlowWalking = false;
+
         defaultInput = new DefaultInput();
 
         defaultInput.Character.Movement.performed += e => inputMovement = e.ReadValue<Vector2>();
         defaultInput.Character.View.performed += e => inputView = e.ReadValue<Vector2>();
         defaultInput.Character.Jump.performed += e => Jump();
+        defaultInput.Character.SlowWalk.performed += e => isSlowWalking = true;
 
         defaultInput.Enable();
 
