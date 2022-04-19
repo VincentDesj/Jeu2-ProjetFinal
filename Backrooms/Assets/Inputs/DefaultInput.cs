@@ -44,8 +44,16 @@ public class @DefaultInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Slow Walk"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""83684665-5de0-4303-a0aa-f84a85588f90"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Run"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""b401adf2-472c-424e-b3fc-e8631eedc0b7"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -139,6 +147,28 @@ public class @DefaultInput : IInputActionCollection, IDisposable
                     ""action"": ""Slow Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bbb0ae45-2e41-4532-a883-1f298fff538c"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fb938389-d68a-4fbc-8d12-fa61d9028f18"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -151,6 +181,7 @@ public class @DefaultInput : IInputActionCollection, IDisposable
         m_Character_View = m_Character.FindAction("View", throwIfNotFound: true);
         m_Character_Jump = m_Character.FindAction("Jump", throwIfNotFound: true);
         m_Character_SlowWalk = m_Character.FindAction("Slow Walk", throwIfNotFound: true);
+        m_Character_Run = m_Character.FindAction("Run", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -204,6 +235,7 @@ public class @DefaultInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Character_View;
     private readonly InputAction m_Character_Jump;
     private readonly InputAction m_Character_SlowWalk;
+    private readonly InputAction m_Character_Run;
     public struct CharacterActions
     {
         private @DefaultInput m_Wrapper;
@@ -212,6 +244,7 @@ public class @DefaultInput : IInputActionCollection, IDisposable
         public InputAction @View => m_Wrapper.m_Character_View;
         public InputAction @Jump => m_Wrapper.m_Character_Jump;
         public InputAction @SlowWalk => m_Wrapper.m_Character_SlowWalk;
+        public InputAction @Run => m_Wrapper.m_Character_Run;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -233,6 +266,9 @@ public class @DefaultInput : IInputActionCollection, IDisposable
                 @SlowWalk.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSlowWalk;
                 @SlowWalk.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSlowWalk;
                 @SlowWalk.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSlowWalk;
+                @Run.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnRun;
+                @Run.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnRun;
+                @Run.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnRun;
             }
             m_Wrapper.m_CharacterActionsCallbackInterface = instance;
             if (instance != null)
@@ -249,6 +285,9 @@ public class @DefaultInput : IInputActionCollection, IDisposable
                 @SlowWalk.started += instance.OnSlowWalk;
                 @SlowWalk.performed += instance.OnSlowWalk;
                 @SlowWalk.canceled += instance.OnSlowWalk;
+                @Run.started += instance.OnRun;
+                @Run.performed += instance.OnRun;
+                @Run.canceled += instance.OnRun;
             }
         }
     }
@@ -259,5 +298,6 @@ public class @DefaultInput : IInputActionCollection, IDisposable
         void OnView(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnSlowWalk(InputAction.CallbackContext context);
+        void OnRun(InputAction.CallbackContext context);
     }
 }

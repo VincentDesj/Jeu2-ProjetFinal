@@ -12,11 +12,11 @@ public class HunterPreySystem : MonoBehaviour
 
     void Start()
     {
-        int nbrOfPreys = preys.transform.childCount;
+        /*int nbrOfPreys = preys.transform.childCount;
 
         for (int i = 0; i < nbrOfPreys; i++) {
             listOfPreys.Add(preys.transform.GetChild(i).gameObject);
-        }
+        }*/
     }
 
     // Update is called once per frame

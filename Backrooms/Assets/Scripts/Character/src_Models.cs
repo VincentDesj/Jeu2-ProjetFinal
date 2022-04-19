@@ -6,6 +6,14 @@ public class src_Models : MonoBehaviour
 {
     #region Player
 
+    public enum PlayerState
+    { 
+        Idle,
+        SlowWalk,
+        Walk,
+        Run
+    }
+
     [Serializable]
     public class PlayerSettingsModel 
     {
@@ -19,7 +27,7 @@ public class src_Models : MonoBehaviour
         public float walkingStrafeSpeed = 3;
 
         [Header("Jumping")]
-        public float jumpingHeight = 10;
+        public float jumpingHeight = 6;
         public float jumpingFalloff = 1;
     }
 

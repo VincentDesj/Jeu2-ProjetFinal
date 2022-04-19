@@ -28,18 +28,23 @@ public class src_CharacterController : MonoBehaviour
 
     public Vector3 jumpingForce;
     private Vector3 jumpingForceVelocity;
-    private bool isSlowWalking;
+
+
+    [Header("State")]
+    public PlayerState playerState;
+    public float slowWalkSpeed = 0.7f;
+    public float walkSpeed = 0.7f;
+    public float runSpeed = 1.3f;
+    public bool isNoisy = false;
 
     private void Awake()
     {
-        isSlowWalking = false;
 
         defaultInput = new DefaultInput();
 
         defaultInput.Character.Movement.performed += e => inputMovement = e.ReadValue<Vector2>();
         defaultInput.Character.View.performed += e => inputView = e.ReadValue<Vector2>();
         defaultInput.Character.Jump.performed += e => Jump();
-        defaultInput.Character.SlowWalk.performed += e => isSlowWalking = true;
 
         defaultInput.Enable();
 
@@ -51,9 +56,15 @@ public class src_CharacterController : MonoBehaviour
 
     private void Update()
     {
+        EvaluateSpeed();
         CalculateView();
         CalculateMovement();
         CalculateJump();
+    }
+
+    private void EvaluateSpeed()
+    {
+        //if ()
     }
 
     private void CalculateMovement()
