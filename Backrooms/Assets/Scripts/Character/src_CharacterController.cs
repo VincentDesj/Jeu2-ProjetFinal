@@ -37,13 +37,13 @@ public class src_CharacterController : MonoBehaviour
     public float runSpeed = 1.3f;
     public bool isNoisy = false;
 
-    private bool isSlowWalk;
-    private bool isSprinting;
+    public bool isSlowWalk;
+    public bool isSprinting;
 
     private Vector3 newMovementSpeed;
     private Vector3 newMovementSpeedVelocity;
 
-    private void Awake()
+    public void Awake()
     {
 
         defaultInput = new DefaultInput();
@@ -63,7 +63,7 @@ public class src_CharacterController : MonoBehaviour
     }
 
 
-    private void Update()
+    public void Update()
     {
         EvaluateSpeed();
         CalculateView();
@@ -78,16 +78,20 @@ public class src_CharacterController : MonoBehaviour
 
     private void CalculateMovement()
     {
-        if (inputMovement.y <= 0.2f)
-        {
-            isSprinting = false;
-        }
 
         var verticalSpeed = playerSettings.walkingForwardSpeed;
         var horizontalSpeed = playerSettings.walkingStrafeSpeed;
 
         if (isSprinting) {
-            verticalSpeed = playerSettings.runningForwardSpeed;
+            if (inputMovement.y > 0)
+            {
+                verticalSpeed = playerSettings.runningForwardSpeed;
+            }
+            else
+            {
+                verticalSpeed = playerSettings.runningBackwardSpeed;
+            }
+            
             horizontalSpeed = playerSettings.runningStrafeSpeed;
         }
 
@@ -159,10 +163,6 @@ public class src_CharacterController : MonoBehaviour
 
     private void toggleSprint()
     {
-        if (inputMovement.y <= 0.2f)
-        {
-            isSprinting = false;
-        }
 
         isSprinting = !isSprinting;
     }

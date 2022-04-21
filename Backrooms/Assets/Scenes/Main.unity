@@ -1521,19 +1521,20 @@ MonoBehaviour:
     movementSmoothing: 0.2
     slowWalkForwardSpeed: 2
     slowWalkStrafeSpeed: 1
-    runningForwardSpeed: 6
-    runningStrafeSpeed: 4
+    runningForwardSpeed: 7
+    runningStrafeSpeed: 5
+    runningBackwardSpeed: 5
     walkingForwardSpeed: 3
-    walkingBackwardSpeed: 3
     walkingStrafeSpeed: 3
+    walkingBackwardSpeed: 2
     jumpingHeight: 8
-    jumpingFalloff: 0.75
+    jumpingFalloff: 0.4
     fallingSmoothing: 0.4
     SpeedEffector: 1
-    FallingSpeedEffector: 0.4
+    FallingSpeedEffector: 0.8
   viewClampYMin: -70
   viewClampYMax: 80
-  gravityAmount: 0.1
+  gravityAmount: 0.03
   gravityMin: -3
   jumpingForce: {x: 0, y: 0, z: 0}
   playerState: 0
@@ -1541,6 +1542,8 @@ MonoBehaviour:
   walkSpeed: 0.7
   runSpeed: 1.3
   isNoisy: 0
+  isSlowWalk: 0
+  isSprinting: 0
 --- !u!143 &1375861056
 CharacterController:
   m_ObjectHideFlags: 0
