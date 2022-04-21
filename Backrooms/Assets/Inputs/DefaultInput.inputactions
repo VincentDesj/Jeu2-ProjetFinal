@@ -31,19 +31,19 @@
                 },
                 {
                     "name": "Slow Walk",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "83684665-5de0-4303-a0aa-f84a85588f90",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press(behavior=2)"
                 },
                 {
-                    "name": "Run",
-                    "type": "PassThrough",
-                    "id": "b401adf2-472c-424e-b3fc-e8631eedc0b7",
+                    "name": "Sprint",
+                    "type": "Button",
+                    "id": "75cec216-f25b-4f05-ba8e-3ee968bccd27",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press(behavior=2)"
                 }
             ],
             "bindings": [
@@ -127,7 +127,7 @@
                 {
                     "name": "",
                     "id": "9eaf0662-4c2c-4943-bd8a-b11ad4a793bb",
-                    "path": "<Keyboard>/leftCtrl",
+                    "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -137,23 +137,12 @@
                 },
                 {
                     "name": "",
-                    "id": "bbb0ae45-2e41-4532-a883-1f298fff538c",
-                    "path": "<Keyboard>/leftShift",
+                    "id": "0171c1b5-a200-43a8-8188-51facfb6f0b6",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Run",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "fb938389-d68a-4fbc-8d12-fa61d9028f18",
-                    "path": "<Keyboard>/leftCtrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Run",
+                    "action": "Sprint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

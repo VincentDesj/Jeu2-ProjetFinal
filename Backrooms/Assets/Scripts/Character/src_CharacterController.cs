@@ -37,6 +37,12 @@ public class src_CharacterController : MonoBehaviour
     public float runSpeed = 1.3f;
     public bool isNoisy = false;
 
+    private bool isSlowWalk;
+    private bool isSprinting;
+
+    private Vector3 newMovementSpeed;
+    private Vector3 newMovementSpeedVelocity;
+
     private void Awake()
     {
 
@@ -45,6 +51,8 @@ public class src_CharacterController : MonoBehaviour
         defaultInput.Character.Movement.performed += e => inputMovement = e.ReadValue<Vector2>();
         defaultInput.Character.View.performed += e => inputView = e.ReadValue<Vector2>();
         defaultInput.Character.Jump.performed += e => Jump();
+        defaultInput.Character.Sprint.performed += e => toggleSprint();
+        defaultInput.Character.SlowWalk.performed += e => toggleSlowWalk();
 
         defaultInput.Enable();
 
@@ -53,6 +61,7 @@ public class src_CharacterController : MonoBehaviour
 
         characterController = GetComponent<CharacterController>();
     }
+
 
     private void Update()
     {
@@ -69,13 +78,39 @@ public class src_CharacterController : MonoBehaviour
 
     private void CalculateMovement()
     {
-        var verticalSpeed = playerSettings.walkingForwardSpeed * inputMovement.y * Time.deltaTime;
-        var horizontalSpeed = playerSettings.walkingStrafeSpeed * inputMovement.x * Time.deltaTime;
+        if (inputMovement.y <= 0.2f)
+        {
+            isSprinting = false;
+        }
 
-        var newMovementSpeed = new Vector3(horizontalSpeed, 0, verticalSpeed);
-        newMovementSpeed = cameraHolder.TransformDirection(newMovementSpeed);
+        var verticalSpeed = playerSettings.walkingForwardSpeed;
+        var horizontalSpeed = playerSettings.walkingStrafeSpeed;
 
-        characterController.Move(newMovementSpeed);
+        if (isSprinting) {
+            verticalSpeed = playerSettings.runningForwardSpeed;
+            horizontalSpeed = playerSettings.runningStrafeSpeed;
+        }
+
+        if (isSlowWalk)
+        {
+            verticalSpeed = playerSettings.slowWalkForwardSpeed;
+            horizontalSpeed = playerSettings.slowWalkStrafeSpeed;
+        }
+
+        if (characterController.isGrounded)
+        {
+            playerSettings.SpeedEffector = playerSettings.FallingSpeedEffector;
+        }
+        else
+        {
+            playerSettings.SpeedEffector = 1;
+        }
+
+        verticalSpeed *= playerSettings.SpeedEffector;
+        horizontalSpeed *= playerSettings.SpeedEffector;
+
+        newMovementSpeed = Vector3.SmoothDamp(newMovementSpeed, new Vector3(horizontalSpeed * inputMovement.x * Time.deltaTime, 0, verticalSpeed * inputMovement.y * Time.deltaTime), ref newMovementSpeedVelocity, characterController.isGrounded ? playerSettings.movementSmoothing : playerSettings.fallingSmoothing);
+        var movementSpeed = cameraHolder.TransformDirection(newMovementSpeed);
 
         if (playerGravity > gravityMin)
         {
@@ -87,10 +122,10 @@ public class src_CharacterController : MonoBehaviour
             playerGravity = -0.1f;
         }
 
-        newMovementSpeed.y += playerGravity;
-        newMovementSpeed += jumpingForce * Time.deltaTime;
+        movementSpeed.y += playerGravity;
+        movementSpeed += jumpingForce * Time.deltaTime;
 
-        characterController.Move(newMovementSpeed);
+        characterController.Move(movementSpeed);
     }
 
     private void CalculateView() 
@@ -120,5 +155,20 @@ public class src_CharacterController : MonoBehaviour
         //Jump
         jumpingForce = Vector3.up * playerSettings.jumpingHeight;
         playerGravity = 0;
+    }
+
+    private void toggleSprint()
+    {
+        if (inputMovement.y <= 0.2f)
+        {
+            isSprinting = false;
+        }
+
+        isSprinting = !isSprinting;
+    }
+
+    private void toggleSlowWalk()
+    {
+        isSlowWalk = !isSlowWalk;
     }
 }

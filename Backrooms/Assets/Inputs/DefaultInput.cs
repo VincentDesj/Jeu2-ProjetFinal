@@ -44,19 +44,19 @@ public class @DefaultInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Slow Walk"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""83684665-5de0-4303-a0aa-f84a85588f90"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press(behavior=2)""
                 },
                 {
-                    ""name"": ""Run"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""b401adf2-472c-424e-b3fc-e8631eedc0b7"",
+                    ""name"": ""Sprint"",
+                    ""type"": ""Button"",
+                    ""id"": ""75cec216-f25b-4f05-ba8e-3ee968bccd27"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press(behavior=2)""
                 }
             ],
             ""bindings"": [
@@ -140,7 +140,7 @@ public class @DefaultInput : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""9eaf0662-4c2c-4943-bd8a-b11ad4a793bb"",
-                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""path"": ""<Keyboard>/c"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -150,23 +150,12 @@ public class @DefaultInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""bbb0ae45-2e41-4532-a883-1f298fff538c"",
-                    ""path"": ""<Keyboard>/leftShift"",
+                    ""id"": ""0171c1b5-a200-43a8-8188-51facfb6f0b6"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Run"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""fb938389-d68a-4fbc-8d12-fa61d9028f18"",
-                    ""path"": ""<Keyboard>/leftCtrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Run"",
+                    ""action"": ""Sprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -181,7 +170,7 @@ public class @DefaultInput : IInputActionCollection, IDisposable
         m_Character_View = m_Character.FindAction("View", throwIfNotFound: true);
         m_Character_Jump = m_Character.FindAction("Jump", throwIfNotFound: true);
         m_Character_SlowWalk = m_Character.FindAction("Slow Walk", throwIfNotFound: true);
-        m_Character_Run = m_Character.FindAction("Run", throwIfNotFound: true);
+        m_Character_Sprint = m_Character.FindAction("Sprint", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -235,7 +224,7 @@ public class @DefaultInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Character_View;
     private readonly InputAction m_Character_Jump;
     private readonly InputAction m_Character_SlowWalk;
-    private readonly InputAction m_Character_Run;
+    private readonly InputAction m_Character_Sprint;
     public struct CharacterActions
     {
         private @DefaultInput m_Wrapper;
@@ -244,7 +233,7 @@ public class @DefaultInput : IInputActionCollection, IDisposable
         public InputAction @View => m_Wrapper.m_Character_View;
         public InputAction @Jump => m_Wrapper.m_Character_Jump;
         public InputAction @SlowWalk => m_Wrapper.m_Character_SlowWalk;
-        public InputAction @Run => m_Wrapper.m_Character_Run;
+        public InputAction @Sprint => m_Wrapper.m_Character_Sprint;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -266,9 +255,9 @@ public class @DefaultInput : IInputActionCollection, IDisposable
                 @SlowWalk.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSlowWalk;
                 @SlowWalk.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSlowWalk;
                 @SlowWalk.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSlowWalk;
-                @Run.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnRun;
-                @Run.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnRun;
-                @Run.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnRun;
+                @Sprint.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSprint;
+                @Sprint.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSprint;
+                @Sprint.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSprint;
             }
             m_Wrapper.m_CharacterActionsCallbackInterface = instance;
             if (instance != null)
@@ -285,9 +274,9 @@ public class @DefaultInput : IInputActionCollection, IDisposable
                 @SlowWalk.started += instance.OnSlowWalk;
                 @SlowWalk.performed += instance.OnSlowWalk;
                 @SlowWalk.canceled += instance.OnSlowWalk;
-                @Run.started += instance.OnRun;
-                @Run.performed += instance.OnRun;
-                @Run.canceled += instance.OnRun;
+                @Sprint.started += instance.OnSprint;
+                @Sprint.performed += instance.OnSprint;
+                @Sprint.canceled += instance.OnSprint;
             }
         }
     }
@@ -298,6 +287,6 @@ public class @DefaultInput : IInputActionCollection, IDisposable
         void OnView(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnSlowWalk(InputAction.CallbackContext context);
-        void OnRun(InputAction.CallbackContext context);
+        void OnSprint(InputAction.CallbackContext context);
     }
 }
