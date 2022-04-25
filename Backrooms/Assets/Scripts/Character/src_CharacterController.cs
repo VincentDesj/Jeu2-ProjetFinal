@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static src_Models;
 
@@ -7,7 +5,9 @@ public class src_CharacterController : MonoBehaviour
 {
     private CharacterController characterController;
     private DefaultInput defaultInput;
+    [HideInInspector]
     public Vector2 inputMovement;
+    [HideInInspector]
     public Vector2 inputView;
 
     private Vector3 newCameraRotation;
@@ -40,8 +40,13 @@ public class src_CharacterController : MonoBehaviour
     public bool isSlowWalk;
     public bool isSprinting;
 
+    public GameObject[] flashlights;
+
     private Vector3 newMovementSpeed;
     private Vector3 newMovementSpeedVelocity;
+
+    [Header("Weapon")]
+    public src_WeaponController currentWeapon;
 
     public void Awake()
     {
@@ -53,6 +58,7 @@ public class src_CharacterController : MonoBehaviour
         defaultInput.Character.Jump.performed += e => Jump();
         defaultInput.Character.Sprint.performed += e => toggleSprint();
         defaultInput.Character.SlowWalk.performed += e => toggleSlowWalk();
+        defaultInput.Character.ActivateFlashlight.performed += e => toggleFlashlight();
 
         defaultInput.Enable();
 
@@ -60,8 +66,12 @@ public class src_CharacterController : MonoBehaviour
         newCharacterRotation = transform.localRotation.eulerAngles;
 
         characterController = GetComponent<CharacterController>();
-    }
 
+        if (currentWeapon)
+        { 
+            currentWeapon.Initialise(this);
+        }
+    }
 
     public void Update()
     {
@@ -170,5 +180,13 @@ public class src_CharacterController : MonoBehaviour
     private void toggleSlowWalk()
     {
         isSlowWalk = !isSlowWalk;
+    }
+
+    private void toggleFlashlight()
+    {
+        for (int i = 0; i < flashlights.Length; i++)
+        {
+            flashlights[i].SetActive(!flashlights[i].active);
+        }
     }
 }

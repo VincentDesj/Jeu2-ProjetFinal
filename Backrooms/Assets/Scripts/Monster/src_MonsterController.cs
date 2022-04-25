@@ -9,6 +9,14 @@ public class src_MonsterController : MonoBehaviour
     public GameObject terrain;
     public Bounds terrainBounds;
     public NavMeshAgent navMeshAgent;
+    //private SphereCollider collider;
+
+    public bool playerHearable;
+
+    private GameObject[] players;
+
+    public Vector3 personalLastSighting;
+    public Vector3 previousSighting;
 
     public Vector3 nextPosition;
 
@@ -17,8 +25,9 @@ public class src_MonsterController : MonoBehaviour
         terrainBounds = terrain.gameObject.GetComponent<Collider>().bounds;
         nextPosition = new Vector3();
         navMeshAgent = this.GetComponent<NavMeshAgent>();
-
         GetNextPosition();
+
+        players = GameObject.FindGameObjectsWithTag("Player");
     }
 
     // Update is called once per frame
