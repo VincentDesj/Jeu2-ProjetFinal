@@ -56,9 +56,9 @@ public class src_CharacterController : MonoBehaviour
         defaultInput.Character.Movement.performed += e => inputMovement = e.ReadValue<Vector2>();
         defaultInput.Character.View.performed += e => inputView = e.ReadValue<Vector2>();
         defaultInput.Character.Jump.performed += e => Jump();
-        defaultInput.Character.Sprint.performed += e => toggleSprint();
-        defaultInput.Character.SlowWalk.performed += e => toggleSlowWalk();
-        defaultInput.Character.ActivateFlashlight.performed += e => toggleFlashlight();
+        defaultInput.Character.Sprint.performed += e => ToggleSprint();
+        defaultInput.Character.SlowWalk.performed += e => ToggleSlowWalk();
+        defaultInput.Character.ActivateFlashlight.performed += e => ToggleFlashlight();
 
         defaultInput.Enable();
 
@@ -68,7 +68,7 @@ public class src_CharacterController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
 
         if (currentWeapon)
-        { 
+        {
             currentWeapon.Initialise(this);
         }
     }
@@ -92,7 +92,8 @@ public class src_CharacterController : MonoBehaviour
         var verticalSpeed = playerSettings.walkingForwardSpeed;
         var horizontalSpeed = playerSettings.walkingStrafeSpeed;
 
-        if (isSprinting) {
+        if (isSprinting)
+        {
             if (inputMovement.y > 0)
             {
                 verticalSpeed = playerSettings.runningForwardSpeed;
@@ -101,7 +102,7 @@ public class src_CharacterController : MonoBehaviour
             {
                 verticalSpeed = playerSettings.runningBackwardSpeed;
             }
-            
+
             horizontalSpeed = playerSettings.runningStrafeSpeed;
         }
 
@@ -123,7 +124,8 @@ public class src_CharacterController : MonoBehaviour
         verticalSpeed *= playerSettings.SpeedEffector;
         horizontalSpeed *= playerSettings.SpeedEffector;
 
-        newMovementSpeed = Vector3.SmoothDamp(newMovementSpeed, new Vector3(horizontalSpeed * inputMovement.x * Time.deltaTime, 0, verticalSpeed * inputMovement.y * Time.deltaTime), ref newMovementSpeedVelocity, characterController.isGrounded ? playerSettings.movementSmoothing : playerSettings.fallingSmoothing);
+        newMovementSpeed = Vector3.SmoothDamp(newMovementSpeed, new Vector3(horizontalSpeed * inputMovement.x * Time.deltaTime, 0, verticalSpeed * inputMovement.y * Time.deltaTime),
+            ref newMovementSpeedVelocity, characterController.isGrounded ? playerSettings.movementSmoothing : playerSettings.fallingSmoothing);
         var movementSpeed = cameraHolder.TransformDirection(newMovementSpeed);
 
         if (playerGravity > gravityMin)
@@ -142,7 +144,7 @@ public class src_CharacterController : MonoBehaviour
         characterController.Move(movementSpeed);
     }
 
-    private void CalculateView() 
+    private void CalculateView()
     {
         newCameraRotation.y += playerSettings.viewXSensitivity * inputView.x * Time.deltaTime;
         transform.localRotation = Quaternion.Euler(newCharacterRotation);
@@ -161,7 +163,7 @@ public class src_CharacterController : MonoBehaviour
 
     private void Jump()
     {
-        if (!characterController.isGrounded) 
+        if (!characterController.isGrounded)
         {
             return;
         }
@@ -171,22 +173,26 @@ public class src_CharacterController : MonoBehaviour
         playerGravity = 0;
     }
 
-    private void toggleSprint()
+    private void ToggleSprint()
     {
 
         isSprinting = !isSprinting;
     }
 
-    private void toggleSlowWalk()
+    private void ToggleSlowWalk()
     {
         isSlowWalk = !isSlowWalk;
     }
 
-    private void toggleFlashlight()
+    private void ToggleFlashlight()
     {
-        for (int i = 0; i < flashlights.Length; i++)
+        int nbFlashlights = flashlights.Length;
+        for (int i = 0; i < nbFlashlights; i++)
         {
-            flashlights[i].SetActive(!flashlights[i].active);
+            // flashlights[i].SetActive(!flashlights[i].active);
+
+            // TODO : Valider que le comportement est toujours bon (isActiveInHierarchy remplace active qui est obsolète)
+            flashlights[i].SetActive(!flashlights[i].activeInHierarchy);
         }
     }
 }
