@@ -10,15 +10,15 @@ public class PlayerController : MonoBehaviour
     public GameObject character;
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         character = GetComponent<GameObject>();
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    public void FixedUpdate()
     {
-        float vitesse = 0;
+        float vitesse;
 
         if (Input.GetKeyDown("w")) {
             vitesse = walkSpeed;

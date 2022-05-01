@@ -48,6 +48,8 @@ public class src_CharacterController : MonoBehaviour
     [Header("Weapon")]
     public src_WeaponController currentWeapon;
 
+    public GameObject spine;
+
     public void Awake()
     {
 
@@ -154,6 +156,9 @@ public class src_CharacterController : MonoBehaviour
         newCameraRotation.x = Mathf.Clamp(newCameraRotation.x, viewClampYMin, viewClampYMax);
 
         cameraHolder.localRotation = Quaternion.Euler(newCameraRotation);
+
+        //TODO À revoir (à quoi lier la spine?)
+        spine.transform.rotation = Quaternion.Euler(newCameraRotation);
     }
 
     private void CalculateJump()

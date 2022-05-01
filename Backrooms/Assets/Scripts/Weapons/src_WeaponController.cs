@@ -22,7 +22,7 @@ public class src_WeaponController : MonoBehaviour
     Vector3 targetWeaponMovementRotation;
     Vector3 targetWeaponMovementRotationVelocity;
 
-    private void Start()
+    public void Start()
     {
         newWeaponRotation = transform.localRotation.eulerAngles;
     }
@@ -33,7 +33,7 @@ public class src_WeaponController : MonoBehaviour
         isInitialised = true;
     }
 
-    private void Update()
+    public void Update()
     {
         if (!isInitialised)
         {

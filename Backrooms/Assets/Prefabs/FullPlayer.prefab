@@ -285,6 +285,7 @@ MonoBehaviour:
   - {fileID: 6735531680063533814}
   - {fileID: 6735531680063449786}
   currentWeapon: {fileID: 6735531679959293354}
+  spine: {fileID: 2329112020241661760}
 --- !u!114 &937676310545409186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,6 +477,11 @@ PrefabInstance:
 --- !u!4 &6553814006200743084 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ae08705a57a6c724a95cb6be3296d018, type: 3}
+  m_PrefabInstance: {fileID: 6735531678479831879}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2329112020241661760 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -203856693384778745, guid: ae08705a57a6c724a95cb6be3296d018, type: 3}
   m_PrefabInstance: {fileID: 6735531678479831879}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &4957555724420230287 stripped
