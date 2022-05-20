@@ -45,6 +45,9 @@ public class src_CharacterController : MonoBehaviour
     private Vector3 newMovementSpeed;
     private Vector3 newMovementSpeedVelocity;
 
+    public float verticalMovementInput;
+    public float horizontalMovementInput;
+
     [Header("Weapon")]
     public src_WeaponController currentWeapon;
 
@@ -125,6 +128,9 @@ public class src_CharacterController : MonoBehaviour
 
         verticalSpeed *= playerSettings.SpeedEffector;
         horizontalSpeed *= playerSettings.SpeedEffector;
+
+        verticalMovementInput = verticalSpeed * inputMovement.y * Time.deltaTime;
+        horizontalMovementInput = horizontalSpeed * inputMovement.x * Time.deltaTime;
 
         newMovementSpeed = Vector3.SmoothDamp(newMovementSpeed, new Vector3(horizontalSpeed * inputMovement.x * Time.deltaTime, 0, verticalSpeed * inputMovement.y * Time.deltaTime),
             ref newMovementSpeedVelocity, characterController.isGrounded ? playerSettings.movementSmoothing : playerSettings.fallingSmoothing);
