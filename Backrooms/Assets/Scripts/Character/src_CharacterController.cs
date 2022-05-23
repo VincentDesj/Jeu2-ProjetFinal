@@ -5,6 +5,8 @@ public class src_CharacterController : MonoBehaviour
 {
     private CharacterController characterController;
     private DefaultInput defaultInput;
+    private AnimStateController animator;
+
     [HideInInspector]
     public Vector2 inputMovement;
     [HideInInspector]
@@ -42,7 +44,7 @@ public class src_CharacterController : MonoBehaviour
 
     public GameObject[] flashlights;
 
-    private Vector3 newMovementSpeed;
+    public Vector3 newMovementSpeed;
     private Vector3 newMovementSpeedVelocity;
 
     public float verticalMovementInput;
@@ -66,6 +68,8 @@ public class src_CharacterController : MonoBehaviour
         defaultInput.Character.ActivateFlashlight.performed += e => ToggleFlashlight();
 
         defaultInput.Enable();
+
+        animator = gameObject.GetComponentInChildren<AnimStateController>();
 
         newCameraRotation = cameraHolder.localRotation.eulerAngles;
         newCharacterRotation = transform.localRotation.eulerAngles;
@@ -131,6 +135,10 @@ public class src_CharacterController : MonoBehaviour
 
         verticalMovementInput = verticalSpeed * inputMovement.y * Time.deltaTime;
         horizontalMovementInput = horizontalSpeed * inputMovement.x * Time.deltaTime;
+
+        Debug.Log(verticalMovementInput);
+
+        animator.setVelocities(verticalMovementInput, horizontalMovementInput);
 
         newMovementSpeed = Vector3.SmoothDamp(newMovementSpeed, new Vector3(horizontalSpeed * inputMovement.x * Time.deltaTime, 0, verticalSpeed * inputMovement.y * Time.deltaTime),
             ref newMovementSpeedVelocity, characterController.isGrounded ? playerSettings.movementSmoothing : playerSettings.fallingSmoothing);

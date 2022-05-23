@@ -286,6 +286,8 @@ MonoBehaviour:
   - {fileID: 6735531680063328302}
   - {fileID: 6735531680063533814}
   - {fileID: 6735531680063449786}
+  verticalMovementInput: 0
+  horizontalMovementInput: 0
   currentWeapon: {fileID: 6735531679959293354}
   spine: {fileID: 2329112020241661760}
 --- !u!114 &8618221725874378730
@@ -588,6 +590,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8884880102150610122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5888460575442431510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36019a1c1e6d046478c98327164b1d32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6735531680063383820
 PrefabInstance:
   m_ObjectHideFlags: 0
