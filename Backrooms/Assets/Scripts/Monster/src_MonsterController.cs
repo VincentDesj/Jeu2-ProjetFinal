@@ -20,8 +20,19 @@ public class src_MonsterController : MonoBehaviour
 
     public Vector3 nextPosition;
 
-    void Awake()
+    public GameObject visualMonster;
+    public float verticalSpeed;
+    public float amplitude;
+    public float verticalOffset;
+    public Vector3 tempPosition;
+
+    public void Awake()
     {
+        verticalSpeed = 6f;
+        amplitude = 0.2f;
+        verticalOffset = 2.5f;
+        tempPosition = transform.position;
+
         terrainBounds = terrain.gameObject.GetComponent<Collider>().bounds;
         nextPosition = new Vector3();
         navMeshAgent = this.GetComponent<NavMeshAgent>();
@@ -31,8 +42,11 @@ public class src_MonsterController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void FixedUpdate()
     {
+        tempPosition.y = (Mathf.Sin(Time.realtimeSinceStartup * verticalSpeed) * amplitude) + verticalOffset;
+        visualMonster.transform.position = new Vector3(transform.position.x, tempPosition.y, transform.position.z);
+
         if (!navMeshAgent.pathPending)
         {
             if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
@@ -49,7 +63,7 @@ public class src_MonsterController : MonoBehaviour
     private void GetNextPosition()
     {
         nextPosition.Set(UnityEngine.Random.Range(terrainBounds.min.x, terrainBounds.max.x),
-                        terrainBounds.max.y,
+                        tempPosition.y,
                         UnityEngine.Random.Range(terrainBounds.min.z, terrainBounds.max.z));
     }
 }
