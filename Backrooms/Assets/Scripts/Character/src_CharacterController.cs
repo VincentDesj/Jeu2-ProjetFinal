@@ -53,7 +53,7 @@ public class src_CharacterController : MonoBehaviour
     [Header("Weapon")]
     public src_WeaponController currentWeapon;
 
-    public GameObject spine;
+    public GameObject characterModel;
 
     public void Awake()
     {
@@ -170,9 +170,12 @@ public class src_CharacterController : MonoBehaviour
         newCameraRotation.x = Mathf.Clamp(newCameraRotation.x, viewClampYMin, viewClampYMax);
 
         cameraHolder.localRotation = Quaternion.Euler(newCameraRotation);
+        characterModel.transform.rotation = Quaternion.Euler(new Vector3(characterModel.transform.rotation.x, newCameraRotation.y, characterModel.transform.rotation.z)) ;
 
-        //TODO À revoir (à quoi lier la spine?)
-        spine.transform.rotation = Quaternion.Euler(newCameraRotation);
+        ///MOUVEMENT DES BRAS AVEC LA FLASHLIGHT PAS FAISABLE DANS UNE ANIM PAS FAISABLE SANS UMOTION
+        //GameObject.Find("mixamorig:Spine1").transform.rotation = Quaternion.Euler(new Vector3(cameraHolder.localRotation.x, characterModel.transform.rotation.y, characterModel.transform.rotation.z));
+        //GameObject.Find("mixamorig:Spine2").transform.rotation = Quaternion.Euler(new Vector3(cameraHolder.localRotation.x, characterModel.transform.rotation.y, characterModel.transform.rotation.z));
+        //GameObject.Find("mixamorig:Neck").transform.rotation = Quaternion.Euler(new Vector3(cameraHolder.localRotation.x, characterModel.transform.rotation.y, characterModel.transform.rotation.z));
     }
 
     private void CalculateJump()
