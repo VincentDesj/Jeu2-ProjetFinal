@@ -136,7 +136,7 @@ public class src_CharacterController : MonoBehaviour
         verticalMovementInput = verticalSpeed * inputMovement.y * Time.deltaTime;
         horizontalMovementInput = horizontalSpeed * inputMovement.x * Time.deltaTime;
 
-        Debug.Log(verticalMovementInput);
+        //Debug.Log(verticalMovementInput);
 
         animator.setVelocities(verticalMovementInput, horizontalMovementInput);
 
