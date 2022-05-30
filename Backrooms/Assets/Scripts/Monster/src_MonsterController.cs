@@ -20,35 +20,48 @@ public class src_MonsterController : MonoBehaviour
 
     public Vector3 nextPosition;
 
-    public GameObject visualMonster;
-    public float verticalSpeed;
-    public float amplitude;
-    public float verticalOffset;
-    public Vector3 tempPosition;
+    public float lastTimeListening;
+    public float listeningDuration;
+    public float startTimeListening;
+    public bool isListening;
+
 
     public void Awake()
     {
-        verticalSpeed = 6f;
-        amplitude = 0.2f;
-        verticalOffset = 2.5f;
-        tempPosition = transform.position;
-
         terrainBounds = terrain.gameObject.GetComponent<Collider>().bounds;
         nextPosition = new Vector3();
         navMeshAgent = this.GetComponent<NavMeshAgent>();
         GetNextPosition();
 
         players = GameObject.FindGameObjectsWithTag("Player");
+
+        lastTimeListening = 0; //Time.deltaTime;
+        listeningDuration = 3f;
+        isListening = false;
     }
 
-    // Update is called once per frame
-    public void FixedUpdate()
-    {
-        tempPosition.y = (Mathf.Sin(Time.realtimeSinceStartup * verticalSpeed) * amplitude) + verticalOffset;
-        visualMonster.transform.position = new Vector3(transform.position.x, tempPosition.y, transform.position.z);
 
-        if (!navMeshAgent.pathPending)
+    // Update is called once per frame
+    public void Update()
+    {
+        if (!navMeshAgent.hasPath)
         {
+            if (!isListening)
+            {
+                startTimeListening = Time.time;
+                isListening = true;
+            }
+            else
+            {
+                if ((Time.time - startTimeListening) > listeningDuration)
+                {
+                    GetNextPosition();
+                    navMeshAgent.SetDestination(nextPosition);
+                    isListening = false;
+                }
+            }
+
+            /*
             if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
             {
                 if (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude == 0f)
@@ -57,13 +70,51 @@ public class src_MonsterController : MonoBehaviour
                     navMeshAgent.SetDestination(nextPosition);
                 }
             }
+            */
         }
     }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("joueur détecté");
+        if (isListening)
+        {
+            if (other.transform.CompareTag("Player"))
+            {
+                if (other.transform.gameObject.GetComponent<src_CharacterController>().isNoisy)
+                {
+                    Vector3 playerPosition = other.transform.position;
+                    nextPosition.Set(playerPosition.x, transform.position.y, playerPosition.z);
+                    navMeshAgent.SetDestination(nextPosition);
+                    isListening = false;
+                }
+            }
+        }
+    }
+
+    /*
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (isListening)
+        {
+            if (collision.transform.CompareTag("Player"))
+            {
+                Debug.Log("joueur détecté");
+                Vector3 playerPosition = collision.transform.position;
+                nextPosition.Set(playerPosition.x, transform.position.y, playerPosition.z);
+                navMeshAgent.SetDestination(nextPosition);
+                isListening = false;
+            }
+        }
+    }
+    */
 
     private void GetNextPosition()
     {
         nextPosition.Set(UnityEngine.Random.Range(terrainBounds.min.x, terrainBounds.max.x),
-                        tempPosition.y,
+                        transform.position.y,
                         UnityEngine.Random.Range(terrainBounds.min.z, terrainBounds.max.z));
     }
+
+
 }
