@@ -136,8 +136,6 @@ public class src_CharacterController : MonoBehaviour
         verticalMovementInput = verticalSpeed * inputMovement.y * Time.deltaTime;
         horizontalMovementInput = horizontalSpeed * inputMovement.x * Time.deltaTime;
 
-        Debug.Log(verticalMovementInput);
-
         animator.setVelocities(verticalMovementInput, horizontalMovementInput);
 
         newMovementSpeed = Vector3.SmoothDamp(newMovementSpeed, new Vector3(horizontalSpeed * inputMovement.x * Time.deltaTime, 0, verticalSpeed * inputMovement.y * Time.deltaTime),
