@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using static src_Models;
 
@@ -17,6 +18,8 @@ public class src_CharacterController : MonoBehaviour
 
     [Header("References")]
     public Transform cameraHolder;
+    private Camera cameraPlayer;
+    private bool monsterIsSeen = false;
 
     [Header("Settings")]
     public PlayerSettingsModel playerSettings;
@@ -54,6 +57,9 @@ public class src_CharacterController : MonoBehaviour
     public src_WeaponController currentWeapon;
 
     public GameObject characterModel;
+    public AudioSource jumpScareSource;
+    public AudioClip audioClip;
+    private GameObject monsterModel;
 
     public void Awake()
     {
@@ -74,7 +80,10 @@ public class src_CharacterController : MonoBehaviour
         newCameraRotation = cameraHolder.localRotation.eulerAngles;
         newCharacterRotation = transform.localRotation.eulerAngles;
 
+        cameraPlayer = cameraHolder.GetComponentInChildren<Camera>();
+
         characterController = GetComponent<CharacterController>();
+        monsterModel = GameObject.Find("Monster");
 
         if (currentWeapon)
         {
@@ -88,6 +97,23 @@ public class src_CharacterController : MonoBehaviour
         CalculateView();
         CalculateMovement();
         CalculateJump();
+        CheckForMonster();
+    }
+
+    private void CheckForMonster()
+    {
+        if (GeometryUtility.TestPlanesAABB(GeometryUtility.CalculateFrustumPlanes(cameraPlayer), monsterModel.GetComponent<CapsuleCollider>().bounds) && monsterIsSeen==false)
+        {
+            StartCoroutine(jumpScareMonster());
+        }
+    }
+
+    private IEnumerator jumpScareMonster()
+    {
+        jumpScareSource.PlayOneShot(audioClip, 0.4f);
+        monsterIsSeen = true;
+        yield return new WaitForSeconds(60f);
+        monsterIsSeen = false;
     }
 
     private void EvaluateSpeed()
