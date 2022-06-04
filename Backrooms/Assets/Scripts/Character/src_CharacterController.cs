@@ -1,5 +1,7 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using static src_Models;
 
 public class src_CharacterController : MonoBehaviour
@@ -7,6 +9,10 @@ public class src_CharacterController : MonoBehaviour
     private CharacterController characterController;
     private DefaultInput defaultInput;
     private AnimStateController animator;
+
+    private int hp = 3;
+
+    [SerializeField] TextMeshProUGUI hpAmount;
 
     [HideInInspector]
     public Vector2 inputMovement;
@@ -85,6 +91,8 @@ public class src_CharacterController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         monsterModel = GameObject.Find("Monster");
 
+        UpdateHpUI();
+
         if (currentWeapon)
         {
             currentWeapon.Initialise(this);
@@ -104,13 +112,19 @@ public class src_CharacterController : MonoBehaviour
     {
         if (GeometryUtility.TestPlanesAABB(GeometryUtility.CalculateFrustumPlanes(cameraPlayer), monsterModel.GetComponent<CapsuleCollider>().bounds) && monsterIsSeen==false)
         {
-            StartCoroutine(jumpScareMonster());
+            var ray = new Ray(cameraPlayer.transform.position, cameraPlayer.transform.forward);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {   
+                if (hit.transform.gameObject.name == "Monster")
+                    StartCoroutine(jumpScareMonster());
+            }
         }
     }
 
     private IEnumerator jumpScareMonster()
     {
-        jumpScareSource.PlayOneShot(audioClip, 0.4f);
+        jumpScareSource.PlayOneShot(audioClip, 0.25f);
         monsterIsSeen = true;
         yield return new WaitForSeconds(60f);
         monsterIsSeen = false;
@@ -163,6 +177,15 @@ public class src_CharacterController : MonoBehaviour
         horizontalMovementInput = horizontalSpeed * inputMovement.x * Time.deltaTime;
 
         animator.setVelocities(verticalMovementInput, horizontalMovementInput);
+
+        if ((verticalMovementInput != 0 || horizontalMovementInput != 0) && !isSlowWalk)
+        {
+            isNoisy = true;
+        }
+        else 
+        {
+            isNoisy = false;
+        }
 
         newMovementSpeed = Vector3.SmoothDamp(newMovementSpeed, new Vector3(horizontalSpeed * inputMovement.x * Time.deltaTime, 0, verticalSpeed * inputMovement.y * Time.deltaTime),
             ref newMovementSpeedVelocity, characterController.isGrounded ? playerSettings.movementSmoothing : playerSettings.fallingSmoothing);
@@ -240,5 +263,29 @@ public class src_CharacterController : MonoBehaviour
             // TODO : Valider que le comportement est toujours bon (isActiveInHierarchy remplace active qui est obsolète)
             flashlights[i].SetActive(!flashlights[i].activeInHierarchy);
         }
+    }
+
+    private void UpdateHpUI() 
+    {
+        char square = '\u25A0';
+        string hpLeft = "";
+        for (int i = 0; i < hp; i++)
+        {
+            hpLeft += square.ToString();
+        }
+
+        hpAmount.text = hpLeft;
+    }
+
+    private void AddToHp(int amount) 
+    {
+        hp += amount;
+        UpdateHpUI();
+    }
+
+    private void SubstactToHp(int amount)
+    {
+        hp -= amount;
+        UpdateHpUI();
     }
 }

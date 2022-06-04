@@ -24,16 +24,21 @@ public class LightController : MonoBehaviour
 
     void Start()
     {
-        ceiling = GameObject.Find("ceiling");
+        ceiling = this.transform.gameObject;
         listLights = ceiling.GetComponentsInChildren<Light>();
         listSparkles = ceiling.GetComponentsInChildren<ParticleSystem>();
 
         foreach (Transform child in ceiling.transform)
-        { 
+        {
             listMaterials.Add(child.GetChild(0).gameObject);
-            
+
         }
-        Debug.Log(listMaterials);
+
+        for (int i = 0; i < listLights.Length; i++)
+        {
+            listLights[i].enabled = false;
+            listMaterials[i].GetComponent<Renderer>().material = lightOff;
+        }
     }
 
     // Update is called once per frame
