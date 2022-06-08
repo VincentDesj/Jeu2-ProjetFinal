@@ -4,6 +4,9 @@ using Mirror;
 public class PlayerSetup : NetworkBehaviour
 {
     [SerializeField]
+    public GameObject[] gameObjectsToDisableOthers;
+
+    [SerializeField]
     private Behaviour[] componentsToDisableOthers;
 
     [SerializeField]
@@ -23,6 +26,11 @@ public class PlayerSetup : NetworkBehaviour
 
         if(!isLocalPlayer)
         {
+            foreach (GameObject gameObject in gameObjectsToDisableOthers)
+            {
+                gameObject.SetActive(false);
+            }
+
             for (int i = 0; i < componentsToDisableOthers.Length; i++)
             {
                 componentsToDisableOthers[i].enabled = false;

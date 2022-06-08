@@ -2,13 +2,14 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 using static src_Models;
 
-public class src_CharacterController : MonoBehaviour
+public class src_CharacterController : NetworkBehaviour
 {
-    private CharacterController characterController;
+    public CharacterController characterController;
     private DefaultInput defaultInput;
-    private AnimStateController animator;
+    public AnimStateController animator;
 
     private int hp = 3;
 
@@ -81,7 +82,7 @@ public class src_CharacterController : MonoBehaviour
 
         defaultInput.Enable();
 
-        animator = gameObject.GetComponentInChildren<AnimStateController>();
+        animator = GetComponent<AnimStateController>();
 
         newCameraRotation = cameraHolder.localRotation.eulerAngles;
         newCharacterRotation = transform.localRotation.eulerAngles;
@@ -101,11 +102,14 @@ public class src_CharacterController : MonoBehaviour
 
     public void Update()
     {
-        EvaluateSpeed();
-        CalculateView();
-        CalculateMovement();
-        CalculateJump();
-        CheckForMonster();
+        if (hasAuthority)
+        { 
+            EvaluateSpeed();
+            CalculateView();
+            CalculateMovement();
+            CalculateJump();
+            CheckForMonster();
+        }
     }
 
     private void CheckForMonster()
@@ -115,7 +119,7 @@ public class src_CharacterController : MonoBehaviour
             var ray = new Ray(cameraPlayer.transform.position, cameraPlayer.transform.forward);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
-            {   
+            {
                 if (hit.transform.gameObject.name == "Monster")
                     StartCoroutine(jumpScareMonster());
             }
@@ -216,7 +220,7 @@ public class src_CharacterController : MonoBehaviour
         newCameraRotation.x += playerSettings.viewYSensitivity * -inputView.y * Time.deltaTime;
         newCameraRotation.x = Mathf.Clamp(newCameraRotation.x, viewClampYMin, viewClampYMax);
 
-        cameraHolder.localRotation = Quaternion.Euler(newCameraRotation);
+        cameraHolder.localRotation = Quaternion.Euler(new Vector3(newCameraRotation.x, cameraHolder.transform.rotation.y, characterModel.transform.rotation.z));
         characterModel.transform.rotation = Quaternion.Euler(new Vector3(characterModel.transform.rotation.x, newCameraRotation.y, characterModel.transform.rotation.z)) ;
 
         ///MOUVEMENT DES BRAS AVEC LA FLASHLIGHT PAS FAISABLE DANS UNE ANIM PAS FAISABLE SANS UMOTION
