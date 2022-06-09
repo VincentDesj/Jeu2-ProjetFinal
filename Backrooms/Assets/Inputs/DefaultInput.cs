@@ -65,6 +65,14 @@ public class @DefaultInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Use"",
+                    ""type"": ""Button"",
+                    ""id"": ""c2a12199-0fb8-42ea-9bc0-9ed105b65bab"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -177,6 +185,17 @@ public class @DefaultInput : IInputActionCollection, IDisposable
                     ""action"": ""Activate Flashlight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3dd4afe9-2742-4b1b-a4f6-2bab3c96f239"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -191,6 +210,7 @@ public class @DefaultInput : IInputActionCollection, IDisposable
         m_Character_SlowWalk = m_Character.FindAction("Slow Walk", throwIfNotFound: true);
         m_Character_Sprint = m_Character.FindAction("Sprint", throwIfNotFound: true);
         m_Character_ActivateFlashlight = m_Character.FindAction("Activate Flashlight", throwIfNotFound: true);
+        m_Character_Use = m_Character.FindAction("Use", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -246,6 +266,7 @@ public class @DefaultInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Character_SlowWalk;
     private readonly InputAction m_Character_Sprint;
     private readonly InputAction m_Character_ActivateFlashlight;
+    private readonly InputAction m_Character_Use;
     public struct CharacterActions
     {
         private @DefaultInput m_Wrapper;
@@ -256,6 +277,7 @@ public class @DefaultInput : IInputActionCollection, IDisposable
         public InputAction @SlowWalk => m_Wrapper.m_Character_SlowWalk;
         public InputAction @Sprint => m_Wrapper.m_Character_Sprint;
         public InputAction @ActivateFlashlight => m_Wrapper.m_Character_ActivateFlashlight;
+        public InputAction @Use => m_Wrapper.m_Character_Use;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -283,6 +305,9 @@ public class @DefaultInput : IInputActionCollection, IDisposable
                 @ActivateFlashlight.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnActivateFlashlight;
                 @ActivateFlashlight.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnActivateFlashlight;
                 @ActivateFlashlight.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnActivateFlashlight;
+                @Use.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnUse;
+                @Use.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnUse;
+                @Use.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnUse;
             }
             m_Wrapper.m_CharacterActionsCallbackInterface = instance;
             if (instance != null)
@@ -305,6 +330,9 @@ public class @DefaultInput : IInputActionCollection, IDisposable
                 @ActivateFlashlight.started += instance.OnActivateFlashlight;
                 @ActivateFlashlight.performed += instance.OnActivateFlashlight;
                 @ActivateFlashlight.canceled += instance.OnActivateFlashlight;
+                @Use.started += instance.OnUse;
+                @Use.performed += instance.OnUse;
+                @Use.canceled += instance.OnUse;
             }
         }
     }
@@ -317,5 +345,6 @@ public class @DefaultInput : IInputActionCollection, IDisposable
         void OnSlowWalk(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnActivateFlashlight(InputAction.CallbackContext context);
+        void OnUse(InputAction.CallbackContext context);
     }
 }
