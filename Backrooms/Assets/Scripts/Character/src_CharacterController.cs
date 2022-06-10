@@ -79,6 +79,7 @@ public class src_CharacterController : NetworkBehaviour
         defaultInput.Character.Sprint.performed += e => ToggleSprint();
         defaultInput.Character.SlowWalk.performed += e => ToggleSlowWalk();
         defaultInput.Character.ActivateFlashlight.performed += e => ToggleFlashlight();
+        defaultInput.Character.Use.performed += e => CheckForGoal();
 
         defaultInput.Enable();
 
@@ -267,6 +268,36 @@ public class src_CharacterController : NetworkBehaviour
             // TODO : Valider que le comportement est toujours bon (isActiveInHierarchy remplace active qui est obsolète)
             flashlights[i].SetActive(!flashlights[i].activeInHierarchy);
         }
+    }
+
+    private void CheckForGoal()
+    {
+        //var ray = new Ray(cameraPlayer.transform.position, cameraPlayer.transform.forward);
+
+        RaycastHit[] hits;
+        hits = Physics.RaycastAll(cameraPlayer.transform.position, cameraPlayer.transform.forward, 10f);
+        for (int i = 0; i < hits.Length; i++)
+        {
+            RaycastHit hit = hits[i];
+            if (hits[i].transform.gameObject.CompareTag("Goal") && hit.distance <= 5f)
+            {
+                hits[i].transform.gameObject.GetComponent<GoalController>().ActivateGoal();
+            }
+
+
+        }
+
+        /*RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            Debug.Log(hit.distance);
+            Debug.Log(hit.transform.gameObject.tag);
+            Debug.Log(hit.transform.gameObject.CompareTag("Computer") && hit.distance <= 5f);
+            if (hit.transform.gameObject.CompareTag("Computer") && hit.distance <= 5f) {
+                hit.transform.SendMessage("ActivateGoal");
+                hit.transform.gameObject.GetComponent<GoalController>().ActivateGoal();
+            }
+        }*/
     }
 
     private void UpdateHpUI() 
