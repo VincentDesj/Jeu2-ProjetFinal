@@ -9,12 +9,14 @@ public class HealthController : MonoBehaviour
 {
     [Header("Damage Assesment")]
     public bool isDead = false;
+    public bool hasEscaped = false;
     public bool isTakingDamage = false;
     public int hp = 3;
     private float colorSmoothing = 1f;
 
 
     [SerializeField] TextMeshProUGUI hpAmount;
+    [SerializeField] TextMeshProUGUI finalMessage;
     public Color damageColor;
     public Image damage;
 
@@ -43,12 +45,25 @@ public class HealthController : MonoBehaviour
     {
         char square = '\u25A0';
         string hpLeft = "";
-        for (int i = 0; i < hp; i++)
+        if (hp != 0)
         {
-            hpLeft += square.ToString();
+            for (int i = 0; i < hp; i++)
+            {
+                hpLeft += square.ToString();
+            }
+        }
+        else 
+        {
+            isDead = true;
         }
 
         hpAmount.text = hpLeft;
+    }
+
+    internal void UpdateFinalMessage(string message)
+    {
+        finalMessage.text = message;
+        finalMessage.gameObject.active = true;
     }
 
     private void AddToHp(int amount)
@@ -62,10 +77,5 @@ public class HealthController : MonoBehaviour
         hp -= amount;
         UpdateHpUI();
         isTakingDamage = true;
-        if (hp > 0)
-        {
-            //StartCoroutine(TakingDamage());
-        }
-        //If 0 is DEAD
     }
 }

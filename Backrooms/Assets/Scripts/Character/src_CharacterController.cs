@@ -218,11 +218,6 @@ public class src_CharacterController : NetworkBehaviour
 
         cameraHolder.localRotation = Quaternion.Euler(new Vector3(newCameraRotation.x, cameraHolder.transform.rotation.y, characterModel.transform.rotation.z));
         characterModel.transform.rotation = Quaternion.Euler(new Vector3(characterModel.transform.rotation.x, newCameraRotation.y, characterModel.transform.rotation.z)) ;
-
-        ///MOUVEMENT DES BRAS AVEC LA FLASHLIGHT PAS FAISABLE DANS UNE ANIM PAS FAISABLE SANS UMOTION
-        //GameObject.Find("mixamorig:Spine1").transform.rotation = Quaternion.Euler(new Vector3(cameraHolder.localRotation.x, characterModel.transform.rotation.y, characterModel.transform.rotation.z));
-        //GameObject.Find("mixamorig:Spine2").transform.rotation = Quaternion.Euler(new Vector3(cameraHolder.localRotation.x, characterModel.transform.rotation.y, characterModel.transform.rotation.z));
-        //GameObject.Find("mixamorig:Neck").transform.rotation = Quaternion.Euler(new Vector3(cameraHolder.localRotation.x, characterModel.transform.rotation.y, characterModel.transform.rotation.z));
     }
 
     private void CalculateJump()
@@ -267,8 +262,6 @@ public class src_CharacterController : NetworkBehaviour
 
     private void CheckForGoal()
     {
-        //var ray = new Ray(cameraPlayer.transform.position, cameraPlayer.transform.forward);
-
         RaycastHit[] hits;
         hits = Physics.RaycastAll(cameraPlayer.transform.position, cameraPlayer.transform.forward, 10f);
         for (int i = 0; i < hits.Length; i++)
@@ -278,20 +271,6 @@ public class src_CharacterController : NetworkBehaviour
             {
                 hits[i].transform.gameObject.GetComponent<GoalController>().ActivateGoal();
             }
-
-
         }
-
-        /*RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
-        {
-            Debug.Log(hit.distance);
-            Debug.Log(hit.transform.gameObject.tag);
-            Debug.Log(hit.transform.gameObject.CompareTag("Computer") && hit.distance <= 5f);
-            if (hit.transform.gameObject.CompareTag("Computer") && hit.distance <= 5f) {
-                hit.transform.SendMessage("ActivateGoal");
-                hit.transform.gameObject.GetComponent<GoalController>().ActivateGoal();
-            }
-        }*/
     }
 }
