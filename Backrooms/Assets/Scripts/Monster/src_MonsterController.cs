@@ -52,7 +52,7 @@ public class src_MonsterController : MonoBehaviour
         terrainBounds = terrain.GetComponent<Collider>().bounds;
         nextPosition = new Vector3();
         navMeshAgent = this.GetComponent<NavMeshAgent>();
-        GetNextPositionRandom();
+        SetNextPositionRandom();
 
         players = gameController.GetComponent<GameController>().listOfPlayers;
         restingDuration = 5f;
@@ -134,14 +134,15 @@ public class src_MonsterController : MonoBehaviour
     }
     */
 
-    private void GetNextPositionRandom()
+    private void SetNextPositionRandom()
     {
         nextPosition.Set(UnityEngine.Random.Range(terrainBounds.min.x, terrainBounds.max.x),
                         transform.position.y,
                         UnityEngine.Random.Range(terrainBounds.min.z, terrainBounds.max.z));
+        navMeshAgent.SetDestination(nextPosition);
     }
 
-    private void GetNextPositionTargetPlayer(Collider player)
+    private void SetNextPositionTargetPlayer(GameObject player)
     {
         Vector3 playerPosition = player.transform.position;
         nextPosition.Set(playerPosition.x, transform.position.y, playerPosition.z);
