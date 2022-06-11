@@ -7,6 +7,7 @@ TagManager:
   - CharacterModel
   - Goal
   - GoalSpawnPoint
+  - Exit
   layers:
   - Default
   - TransparentFX

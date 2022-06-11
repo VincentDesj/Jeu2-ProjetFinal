@@ -6,25 +6,32 @@ using Random = UnityEngine.Random;
 
 public class GameController : MonoBehaviour
 {
+    private bool isOpenedExit = false;
+
     private List<Transform> listOfGoalSpawns = new List<Transform>();
     private List<GameObject> listOfGoals = new List<GameObject>();
-
+    
+    private GameObject exit;
     public GameObject spawnee;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        exit = GameObject.FindGameObjectWithTag("Exit");
+
         Debug.Log(GameObject.FindGameObjectsWithTag("GoalSpawnPoint").ToList().Count);
         listOfGoalSpawns.AddRange(GameObject.FindGameObjectsWithTag("GoalSpawnPoint").Select(item => item.transform).ToList());
         SetGoalSpawnPoint();
         listOfGoals.AddRange(GameObject.FindGameObjectsWithTag("Goal"));
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        checkGoalActivation();
+        if (!isOpenedExit)
+            checkGoalActivation();
     }
 
     private void SetGoalSpawnPoint()
@@ -50,7 +57,14 @@ public class GameController : MonoBehaviour
     {
         if (!listOfGoals.Any(x => !x.GetComponent<GoalController>().goalActive))
         {
-            Debug.Log("SESAME OUVRE TOI!");
+            Debug.Log(exit.transform.position.y);
+            if (exit.transform.position.y >= -12)
+            {
+                exit.transform.Translate(Vector3.down * Time.deltaTime);
+            }
+            else {
+                isOpenedExit = true;
+            }
         }
     }
 }

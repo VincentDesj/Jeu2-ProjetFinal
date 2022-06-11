@@ -14,6 +14,7 @@ public class src_CharacterController : NetworkBehaviour
     private int hp = 3;
 
     [SerializeField] TextMeshProUGUI hpAmount;
+    public Image damage;
 
     [HideInInspector]
     public Vector2 inputMovement;
@@ -92,6 +93,7 @@ public class src_CharacterController : NetworkBehaviour
 
         characterController = GetComponent<CharacterController>();
         monsterModel = GameObject.Find("Monster");
+
 
         UpdateHpUI();
 
@@ -322,5 +324,15 @@ public class src_CharacterController : NetworkBehaviour
     {
         hp -= amount;
         UpdateHpUI();
+        if (hp > 0) 
+        {
+            StartCoroutine(TakingDamage());
+        }
+        //If 0 is DEAD
+    }
+
+    private void TakingDamage()
+    {
+        yield return new WaitForSeconds(timeDelay);
     }
 }
