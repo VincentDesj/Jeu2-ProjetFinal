@@ -1,7 +1,5 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using Mirror;
 using static src_Models;
 
@@ -11,10 +9,7 @@ public class src_CharacterController : NetworkBehaviour
     private DefaultInput defaultInput;
     public AnimStateController animator;
 
-    private int hp = 3;
 
-    [SerializeField] TextMeshProUGUI hpAmount;
-    public Image damage;
 
     [HideInInspector]
     public Vector2 inputMovement;
@@ -95,8 +90,6 @@ public class src_CharacterController : NetworkBehaviour
         monsterModel = GameObject.Find("Monster");
 
 
-        UpdateHpUI();
-
         if (currentWeapon)
         {
             currentWeapon.Initialise(this);
@@ -131,7 +124,7 @@ public class src_CharacterController : NetworkBehaviour
 
     private IEnumerator jumpScareMonster()
     {
-        jumpScareSource.PlayOneShot(audioClip, 0.25f);
+        jumpScareSource.PlayOneShot(audioClip, 1f);
         monsterIsSeen = true;
         yield return new WaitForSeconds(60f);
         monsterIsSeen = false;
@@ -300,39 +293,5 @@ public class src_CharacterController : NetworkBehaviour
                 hit.transform.gameObject.GetComponent<GoalController>().ActivateGoal();
             }
         }*/
-    }
-
-    private void UpdateHpUI() 
-    {
-        char square = '\u25A0';
-        string hpLeft = "";
-        for (int i = 0; i < hp; i++)
-        {
-            hpLeft += square.ToString();
-        }
-
-        hpAmount.text = hpLeft;
-    }
-
-    private void AddToHp(int amount) 
-    {
-        hp += amount;
-        UpdateHpUI();
-    }
-
-    private void SubstactToHp(int amount)
-    {
-        hp -= amount;
-        UpdateHpUI();
-        if (hp > 0) 
-        {
-            //StartCoroutine(TakingDamage());
-        }
-        //If 0 is DEAD
-    }
-
-    private void TakingDamage()
-    {
-        //yield return new WaitForSeconds(timeDelay);
     }
 }

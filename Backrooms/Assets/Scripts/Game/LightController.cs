@@ -16,7 +16,6 @@ public class LightController : MonoBehaviour
     private ParticleSystem[] listSparkles;
     private List<GameObject> listMaterials = new List<GameObject>();
 
-    public AudioSource fluorescent;
     public AudioSource fluorescentFlicker;
 
     public Material lightOn;
@@ -65,9 +64,6 @@ public class LightController : MonoBehaviour
             fluorescentFlicker.Stop();
         }
 
-        if (fluorescent.isPlaying == false)
-            fluorescent.Play();
-
         for (int i = 0; i < listLights.Length; i++) 
         {
             if (listLights[i].enabled == false)
@@ -88,9 +84,6 @@ public class LightController : MonoBehaviour
         {
             fluorescentFlicker.Stop();
         }
-            
-        if (fluorescent.isPlaying == true)
-            fluorescent.Stop();
 
         for (int i = 0; i < listLights.Length; i++)
         {
@@ -115,9 +108,6 @@ public class LightController : MonoBehaviour
                 sparkles.Play();
             }
         }
-
-        if (fluorescent.isPlaying == false)
-            fluorescent.Play();
 
         for (int i = 0 ; i < listLights.Length; i++) 
         {

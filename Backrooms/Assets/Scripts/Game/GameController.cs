@@ -10,7 +10,8 @@ public class GameController : MonoBehaviour
 
     private List<Transform> listOfGoalSpawns = new List<Transform>();
     private List<GameObject> listOfGoals = new List<GameObject>();
-    
+    public List<GameObject> listOfPlayers = new List<GameObject>();
+
     private GameObject exit;
     public GameObject spawnee;
 
@@ -20,7 +21,6 @@ public class GameController : MonoBehaviour
     {
         exit = GameObject.FindGameObjectWithTag("Exit");
 
-        Debug.Log(GameObject.FindGameObjectsWithTag("GoalSpawnPoint").ToList().Count);
         listOfGoalSpawns.AddRange(GameObject.FindGameObjectsWithTag("GoalSpawnPoint").Select(item => item.transform).ToList());
         SetGoalSpawnPoint();
         listOfGoals.AddRange(GameObject.FindGameObjectsWithTag("Goal"));

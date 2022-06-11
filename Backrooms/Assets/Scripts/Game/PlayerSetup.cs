@@ -12,19 +12,14 @@ public class PlayerSetup : NetworkBehaviour
     [SerializeField]
     private GameObject[] componentsToDisableSelf;
 
+    private GameController gameController;
+
     private void Start()
     {
-        /*
-        foreach(Transform child in transform)
-        {
-            if(child.CompareTag("CharacterModel"))
-            {
-                // componentsToDisableSelf[componentsToDisableSelf.Length] = child.gameObject;
-            }
-        }
-        */
+        gameController = GameObject.Find("GameController").GetComponent<GameController>();
+        gameController.listOfPlayers.Add(this.gameObject);
 
-        if(!isLocalPlayer)
+        if (!isLocalPlayer)
         {
             foreach (GameObject gameObject in gameObjectsToDisableOthers)
             {
@@ -43,4 +38,5 @@ public class PlayerSetup : NetworkBehaviour
             }
         }
     }
+
 }
