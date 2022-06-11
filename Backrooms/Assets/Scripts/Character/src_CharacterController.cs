@@ -326,13 +326,13 @@ public class src_CharacterController : NetworkBehaviour
         UpdateHpUI();
         if (hp > 0) 
         {
-            StartCoroutine(TakingDamage());
+            //StartCoroutine(TakingDamage());
         }
         //If 0 is DEAD
     }
 
     private void TakingDamage()
     {
-        yield return new WaitForSeconds(timeDelay);
+        //yield return new WaitForSeconds(timeDelay);
     }
 }
