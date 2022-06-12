@@ -34,6 +34,7 @@ public class GameController : NetworkBehaviour
         checkVictoryCondition();
     }
 
+    [Command]
     private void checkVictoryCondition()
     {
         if (listOfPlayers.All(x => x.GetComponent<HealthController>().isDead))
